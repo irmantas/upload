@@ -132,21 +132,75 @@ class Uploader
         return !empty($this->_errors);
     }
 
+    /**
+     * @return array
+     */
     public function getErrors()
     {
         return $this->_errors;
     }
 
+    /**
+     * Handles upload
+     * @return bool
+     */
     public function handle()
     {
+        if ($this->_check()) {
+            $path_info = pathinfo($this->_handler->getName());
+            $extension = strtolower($path_info['extension']);
 
+            if (!empty($this->_allowExtensions) && !in_array($extension, $this->_allowExtensions)) {
+                $this->setError($this->_errorMessages[self::ERR_FILE_EXT]);
+                return false;
+            }
+
+            if (!empty($this->_filename)) {
+                $filename = $this->_filename;
+            } else {
+                $filename = $path_info['filename'];
+            }
+
+            $save_path = $this->_uploadDirectory . $filename . '.' . $extension;
+
+            if ($this->_handler->save($save_path)) {
+                return true;
+            }
+
+            $this->setError($this->_errorMessages[self::ERR_UPLOAD]);
+        }
+
+        return false;
     }
 
+    /**
+     * Checks for config
+     * @return bool
+     */
     private function _check()
     {
         if (empty($this->_uploadDirectory)) {
             $this->setError($this->_errorMessages[self::ERR_UPLOAD_DIR]);
         }
+
+        if (!is_writable($this->_uploadDirectory)) {
+            $this->setError($this->_errorMessages[self::ERR_WRITE_DIR]);
+        }
+
+        $size = $this->_handler->getSize();
+        if ($size == 0) {
+            $this->setError($this->_errorMessages[self::ERR_FILE_EMPTY]);
+        }
+
+        if ($size > $this->_maxSize) {
+            $this->setError($this->_errorMessages[self::ERR_FILE_LARGE]);
+        }
+
+        if ($size < $this->_minSize) {
+            $this->setError($this->_errorMessages[self::ERR_FILE_SMALL]);
+        }
+
+        return !$this->hasErrors();
     }
 
     /**
