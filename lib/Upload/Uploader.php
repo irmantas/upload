@@ -204,6 +204,23 @@ class Uploader
     }
 
     /**
+     * @param array $messages
+     * @throws \Exception
+     */
+    public function setErrorMessages(array $messages = array())
+    {
+        if (!empty($messages)) {
+            foreach ($messages as $type => $message) {
+                if (!isset($this->_errorMessages[$type])) {
+                    throw new \Exception('Unknown error message');
+                }
+
+                $this->_errorMessages[$type] = $message;
+            }
+        }
+    }
+
+    /**
      * @param $size
      * @return int
      * @throws \Exception
