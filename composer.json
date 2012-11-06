@@ -1,0 +1,16 @@
+{
+    "name": "irmantas/Upload",
+    "description": "Upload handler for Valums fileuploader",
+    "keywords": ["file upload handler","xhr upload handler"],
+    "homepage": "http://irmantas.com"
+
+    "require": {
+        "php": ">=5.3.0"
+    },
+
+    "autoload" : {
+        "psr-0": {
+            "Upload": "lib/"
+        }
+    }
+}
