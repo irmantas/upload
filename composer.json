@@ -1,8 +1,16 @@
 {
-    "name": "irmantas/Upload",
+    "name": "irmantas/upload",
+    "type": "library",
     "description": "Upload handler for Valums fileuploader",
     "keywords": ["file upload handler","xhr upload handler"],
     "homepage": "http://irmantas.com",
+
+    "authors": [
+        {
+            "name": "Irmantas Šiupšinskas",
+            "email": "i.siupsinskas@gmail.com"
+        }
+    ],
 
     "require": {
         "php": ">=5.3.0"
@@ -11,6 +19,12 @@
     "autoload" : {
         "psr-0": {
             "Upload": "lib/"
+        }
+    },
+
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
         }
     }
 }
